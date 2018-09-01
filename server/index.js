@@ -17,6 +17,7 @@ app.post('/repos', function (req, res) {
     if (err) {
       console.log("callback fun threw error")
     } else {
+      // this call back must use the results to send to mongo database
       console.log("got results back from callback repousername")
       res.send(console.log(result));
     }
@@ -26,6 +27,15 @@ app.post('/repos', function (req, res) {
 app.get('/repos', function (req, res) {
   // TODO - your code here!
   // This route should send back the top 25 repos
+      getRepo.getReposByUsername(req.body, function(err, result) {
+        if (err) {
+          console.log("callback fun threw error")
+        } else {
+          //this callback will use results to ?
+          console.log("got results back from callback repousername")
+          res.send(console.log(result));
+        }
+      });
 });
 
 let port = 1128;
