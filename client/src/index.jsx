@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import Search from './components/Search.jsx';
 import RepoList from './components/RepoList.jsx';
+import { Z_ASCII } from 'zlib';
 
 class App extends React.Component {
   constructor(props) {
@@ -14,11 +15,10 @@ class App extends React.Component {
    this.search = this.search.bind(this);
   }
 
-  getOrRefresh (term) {
+  getOrRefresh () {
     $.ajax({
       method: "GET", 
       url:'http://localhost:1128/repos',
-      data: `${term}`,
       contentType: 'text/plain',
       dataType: 'text',
       success: (result) => {
@@ -28,6 +28,7 @@ class App extends React.Component {
         });
       }, 
       error: (err) => {
+        console.log(err);
         console.log("tried making a get request within post but FAILED");
       }
     });
@@ -45,7 +46,7 @@ class App extends React.Component {
       success: (result) => {
         console.log("successfully posted " + result)
         // console.log(this);
-        this.getOrRefresh(term);
+        // this.getOrRefresh(term);
 
       },
       error: (err) => {
@@ -61,6 +62,10 @@ class App extends React.Component {
       <RepoList repos={this.state.repos}/>
       <Search onSearch={this.search}/>
     </div>)
+  }
+
+  componentDidMount() {
+    this.getOrRefresh();
   }
 }
 

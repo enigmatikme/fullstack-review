@@ -1,8 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const getRepo = require('../helpers/github.js')
-const getDataToDatabase = require('../database/index.js')
-const gDFDB = require('../database/index.js');
+const db = require('../database/index.js')
 let app = express();
 
 app.use(express.static(__dirname + '/../client/dist'));
@@ -18,13 +17,15 @@ app.post('/repos', function (req, res) {
   getRepo.getReposByUsername(req.body, function(err, result) {
     if (err) {
       console.log("callback fun threw error")
-      res.send(err);
+      res.status(400).send(err);
     } else {
       // this call back must use the results to send to mongo database
       // console.log("got results back from callback repousername")
-      console.log("result are ---------", result[0])
-      getDataToDatabase.getDataToDatabase(result[0]);
-      res.send(console.log(result[0]));
+      // console.log("result are ---------", result[0])
+      for (let i = 0; i < result.length; i++) {
+        db.getDataToDatabase(result[i]);
+      }
+      res.send(result);
     }
   });
 });
@@ -32,12 +33,13 @@ app.post('/repos', function (req, res) {
 app.get('/repos', function (req, res) {
   // TODO - your code here!
   // This route should send back the top 25 repos
-  gDFDB.getFromDataBase(req.body, function(err, result) {
+  console.log("REQ BODY IS THIS +++++++&&&&+++++", req);
+  db.getFromDataBase(function(err, result) {
     if (err) {
-      console.log("couldn't get error from database, this console is in server");
+      console.log("couldn't get from database, this console is in server", err);
     } else {
-      console.log("GOT DATABACK AND NOW IN SERVER PLZZZZ");
-      res.send(result[0]);
+      // console.log("GOT DATABACK AND NOW IN SERVER PLZZZZ");
+      res.send(result);
     }
   });
 });
