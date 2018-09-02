@@ -6,7 +6,7 @@ let repoSchema = mongoose.Schema({
   // TODO: your schema here!
   username: String, 
   repo_url: String,
-  updatedAt: String
+  updated_at: String
 });
 
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -19,8 +19,8 @@ let getDataToDatabase = function(saveThis) {
   // TODO: Your code here
   // This function should save a repo or repos to
   // the MongoDB
-  console.log("SAVE THIS HAS ARRIVED ==============", saveThis)
-  const repo = new Repo ({username: saveThis.owner.login, repo_url: saveThis.owner.repos_url, update_at: saveThis.update_at });
+  // console.log("SAVE THIS HAS ARRIVED ==============", saveThis)
+  const repo = new Repo ({username: saveThis.owner.login, repo_url: saveThis.owner.repos_url, updated_at: saveThis.updated_at});
   repo.save(function (err, repo){
     if (err) {
       console.log("could not save");
@@ -30,4 +30,17 @@ let getDataToDatabase = function(saveThis) {
   }); 
 }
 
+let getFromDataBase = function(username, callback) {
+  Repo.find({username: username}, function(err, repos) {
+    if (err) {
+      console.log("could not get data from db");
+      callback(err, null);
+    } else {
+      console.log("got the data from database --------", repos);
+      callback(null, repos);
+    }
+  });
+}
+
 module.exports.getDataToDatabase = getDataToDatabase;
+module.exports.gDFDB = getFromDataBase;

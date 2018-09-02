@@ -10,10 +10,31 @@ class App extends React.Component {
     this.state = { 
       repos: []
     }
+   this.getOrRefresh = this.getOrRefresh.bind(this);
+   this.search = this.search.bind(this);
+  }
 
+  getOrRefresh (term) {
+    $.ajax({
+      method: "GET", 
+      url:'http://localhost:1128/repos',
+      data: `${term}`,
+      contentType: 'text/plain',
+      dataType: 'text',
+      success: (result) => {
+        console.log('successfully posted and made a get request AND BACK IN CLIENt+++++', result);
+        this.setState({
+          repos: this.state.repos.push(result)
+        });
+      }, 
+      error: (err) => {
+        console.log("tried making a get request within post but FAILED");
+      }
+    });
   }
 
   search (term) {
+    var that = this;
     console.log(`${term} was searched`);
     $.ajax({
       method: "POST",
@@ -21,10 +42,14 @@ class App extends React.Component {
       data: `${term}`,
       contentType: 'text/plain',
       dataType : 'text',
-      success: function(result) {
-        console.log("successfully posted " + result )
+      success: (result) => {
+        console.log("successfully posted " + result)
+        // console.log(this);
+        this.getOrRefresh(term);
+
       },
-      error: function(err) {
+      error: (err) => {
+        console.log(err);
         console.log("error found in trying to send a post req");
       }
     });
@@ -34,7 +59,7 @@ class App extends React.Component {
     return (<div>
       <h1>Github Fetcher</h1>
       <RepoList repos={this.state.repos}/>
-      <Search onSearch={this.search.bind(this)}/>
+      <Search onSearch={this.search}/>
     </div>)
   }
 }
