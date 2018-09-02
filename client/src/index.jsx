@@ -24,7 +24,7 @@ class App extends React.Component {
       success: (result) => {
         console.log('successfully posted and made a get request AND BACK IN CLIENt+++++', result);
         this.setState({
-          repos: this.state.repos.push(result)
+          repos: JSON.parse(result)
         });
       }, 
       error: (err) => {
@@ -66,6 +66,7 @@ class App extends React.Component {
 
   componentDidMount() {
     this.getOrRefresh();
+    console.log("reached componenet did mount");
   }
 }
 

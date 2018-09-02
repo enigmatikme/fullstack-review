@@ -24,18 +24,19 @@ let getDataToDatabase = function(saveThis) {
   const repo = new Repo ({username: saveThis.owner.login, repo_name: saveThis.full_name, html_url: saveThis.html_url, stars: saveThis.stargazers_count});
   repo.save(function (err, repo){
     if (err) {
-      console.log("could not save");
+      console.log("could not save data in database index.js");
     } else {
-      console.log(repo);
+      // console.log(repo);
+      // console.log("saved repos success in db index.js")
     }
   }); 
 }
 
 let getFromDataBase = function(callback) {
-  console.log("hits here");
+  console.log("hits getFrom Database function in index.js db");
   Repo.find({}, function(err, repos) {
     if (err) {
-      console.log("could not get data from db");
+      console.log("could not get data from db, error in index.js db");
       callback(err, null);
     }
   }).sort({stars: 1}).limit(3).exec(function(err, arrObj) { 

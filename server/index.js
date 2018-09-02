@@ -16,7 +16,7 @@ app.post('/repos', function (req, res) {
   // console.log("res is ==== ", res.body);
   getRepo.getReposByUsername(req.body, function(err, result) {
     if (err) {
-      console.log("callback fun threw error")
+      console.log("callback fun in getRepo server index.js threw error", err)
       res.status(400).send(err);
     } else {
       // this call back must use the results to send to mongo database
@@ -39,6 +39,7 @@ app.get('/repos', function (req, res) {
       console.log("couldn't get from database, this console is in server", err);
     } else {
       // console.log("GOT DATABACK AND NOW IN SERVER PLZZZZ");
+      console.log("result length is &&&&&", result.length)
       res.send(result);
     }
   });
