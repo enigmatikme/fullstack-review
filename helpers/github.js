@@ -18,6 +18,7 @@ let getReposByUsername = (username, callback) => {
       callback(err, null);
     } else {
       let json = JSON.parse(res.body);
+      console.log("JSON IS +++++++++++++++", res.body);
       callback(null, json);
     }
   });

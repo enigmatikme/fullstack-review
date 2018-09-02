@@ -33,13 +33,13 @@ app.post('/repos', function (req, res) {
 app.get('/repos', function (req, res) {
   // TODO - your code here!
   // This route should send back the top 25 repos
-  console.log("REQ BODY IS THIS +++++++&&&&+++++", req);
+  // console.log("REQ BODY IS THIS +++++++&&&&+++++", req);
   db.getFromDataBase(function(err, result) {
     if (err) {
       console.log("couldn't get from database, this console is in server", err);
     } else {
       // console.log("GOT DATABACK AND NOW IN SERVER PLZZZZ");
-      console.log("result length is &&&&&", result.length)
+      // console.log("result length is &&&&&", result.length)
       res.send(result);
     }
   });
